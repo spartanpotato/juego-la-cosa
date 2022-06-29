@@ -11,7 +11,6 @@ import restriccion
 ANCHOVENTANA=640
 ALTOVENTANA=640
 def gameplay():
-    ubicacion=[]
     lista=[[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0],
         [0,0,2,2,2,2,2,2,0,0,0,1,1,1,1,1,1,1,0,0],
         [1,1,2,0,0,0,0,2,0,0,0,1,1,1,1,1,1,1,0,0],
@@ -36,15 +35,15 @@ def gameplay():
     pygame.init()
     ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
     pygame.display.set_caption("test")
-    
-    crearmapa.crearmapa(lista)
-    
-    lista=obstaculos.obstaculos()          
 
+    #primero se crea el mapa, luego la variable obstaculos crea entre 10 y 15 de estos en habitaciones
+    #y cambia la el valor de la lista donde se crean a 3, para que que luegon funcionen las restricciones
+    #y la funcion items no cree estos encima de un obstaculo, luego la variable crea entre 30 y 50 de estos
+    #en espacios libres en habitaciones y pasillos
+    lista=obstaculos.obstaculos(lista)          
     lista=funcionitems.items(lista)                   
-        
-    pygame.display.flip()
 
+    #definimos las coordenadas iniciales del personaje y los npc
     xPlayer=1
     yPlayer=3
     
@@ -59,6 +58,9 @@ def gameplay():
 
     running = True
     while running:
+
+        #en cada frame del gampeplay se copia la imagen de los personajes en sus coordenadas actuales
+        #antes de eso se copia el mapa para borrar la imagen anterior y se vea movimiento
         crearmapa.crearmapa(lista)
         pygame.draw.rect(ventana, (255,255,255), pygame.Rect(xPlayer*32,yPlayer*32,32,32))
         pygame.draw.rect(ventana, (242,95,227), pygame.Rect(xnpc1*32,ynpc1*32,32,32))
@@ -67,6 +69,8 @@ def gameplay():
          
         pygame.display.flip()
 
+        #el programa identifica cuando el jugador presiona una tecla de movimiento y cambia las coordenadas
+        #donde se va a copiar el personaje en el siguiente frame para que se mueva
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:      
                 tecla_presionada= pygame.key.name(event.key)
@@ -87,6 +91,8 @@ def gameplay():
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         xPlayer = xPlayer-1
 
+        #los npc se mueven dependiendo de la variable genera la funcion random, cada frame pueden movese al azar
+        #o no moverse, no dependen del jugador
         random1=random.randint(0,10)
         if random1==0:
             xnpc1=xnpc1+1
@@ -142,10 +148,8 @@ def gameplay():
                 ynpc3=ynpc3+1
         
         
-            
-        
-     
-        
+        #el gameplay esta dentro de un while que termina cuando se cierra la ventana, en etapas posteriores
+        #se acabara cuando se cumpla una condicion de derrota o victoria
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 running=False
