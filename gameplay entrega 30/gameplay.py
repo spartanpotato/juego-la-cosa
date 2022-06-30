@@ -4,6 +4,7 @@
 #Ezequiel Carrasco 18.976.450-2
 #Felipe Henriquez 21.464.670-6
 
+import os
 import pygame
 import sys
 import random
@@ -102,37 +103,7 @@ def gameplay():
         #actualiza los cambios en la pantalla
         pygame.display.flip()
 
-        #el programa identifica cuando el jugador presiona una tecla de movimiento y cambia las coordenadas
-        #donde se va a copiar el personaje en el siguiente frame para que se mueva
-        #cada vez que ocurre un movimiento se ejecuta un if que llama a la funcion restriccion, esta detecta
-        #si las nuevas coordenadas estan en un lugar prohibido(fuera del tablero, en una pared, u obstaculo)
-        #si detecta esto devuelve un True al if y se contrarresta el movimiento antes de que se actualice la pantalla
-        for event in pygame.event.get():
-
-            if (event.type == pygame.QUIT):
-                running=False
-
-                
-            if event.type == pygame.KEYDOWN:      
-                tecla_presionada= pygame.key.name(event.key)
-                
-                if tecla_presionada == 'w':
-                    yPlayer = yPlayer-1
-                    if restriccion.restriccion(xPlayer,yPlayer,lista):
-                        yPlayer = yPlayer+1
-                        
-                if tecla_presionada == 'a':                    
-                    xPlayer = xPlayer-1
-                    if restriccion.restriccion(xPlayer,yPlayer,lista):
-                        xPlayer = xPlayer+1
-                if tecla_presionada == 's':
-                    yPlayer = yPlayer+1
-                    if restriccion.restriccion(xPlayer,yPlayer,lista):
-                        yPlayer = yPlayer-1
-                if tecla_presionada == 'd':
-                    xPlayer = xPlayer+1
-                    if restriccion.restriccion(xPlayer,yPlayer,lista):
-                        xPlayer = xPlayer-1
+        
 
         #los npc se mueven cada x(controlmovimiento) frames, dependiendo de una variable al azar se pueden mover
         #o quedarse quietos. La funcion restriccion funciona igual como con el personaje del jugador
@@ -193,10 +164,39 @@ def gameplay():
                     ynpc3=ynpc3+1
 
         controlmovimiento=controlmovimiento+1
+
+        #el programa identifica cuando el jugador presiona una tecla de movimiento y cambia las coordenadas
+        #donde se va a copiar el personaje en el siguiente frame para que se mueva
+        #cada vez que ocurre un movimiento se ejecuta un if que llama a la funcion restriccion, esta detecta
+        #si las nuevas coordenadas estan en un lugar prohibido(fuera del tablero, en una pared, u obstaculo)
+        #si detecta esto devuelve un True al if y se contrarresta el movimiento antes de que se actualice la pantalla
+        for event in pygame.event.get():
+                            
+            if event.type == pygame.KEYDOWN:      
+                tecla_presionada= pygame.key.name(event.key)
+                
+                if tecla_presionada == 'w':
+                    yPlayer = yPlayer-1
+                    if restriccion.restriccion(xPlayer,yPlayer,lista):
+                        yPlayer = yPlayer+1
+                        
+                if tecla_presionada == 'a':                    
+                    xPlayer = xPlayer-1
+                    if restriccion.restriccion(xPlayer,yPlayer,lista):
+                        xPlayer = xPlayer+1
+                if tecla_presionada == 's':
+                    yPlayer = yPlayer+1
+                    if restriccion.restriccion(xPlayer,yPlayer,lista):
+                        yPlayer = yPlayer-1
+                if tecla_presionada == 'd':
+                    xPlayer = xPlayer+1
+                    if restriccion.restriccion(xPlayer,yPlayer,lista):
+                        xPlayer = xPlayer-1
+            if (event.type == pygame.QUIT):
+                running=False
+    pygame.quit()
+    os._exit(1)
         
-        
-        
-    
 
 gameplay()
-sys.exit()
+
