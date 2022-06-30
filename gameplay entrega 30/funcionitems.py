@@ -8,25 +8,26 @@ ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
 
 #la funcion toma la lista modificada que nos dejo la funcion obstaculos
 def items(lista):
-        lista=lista
         
         contadoritems=0
 
+        #la funcion continua hasta que hayan por lo menos 30 items
         while contadoritems<30:
             for i in range(20):
                 for j in range(20):
 
-                    #como la funcion obstaculos cambio el valor de la lista a 3 donde copio una imagen
-                    #esta funcion no puede copiar otra imagen en las mismas coordenadas
+                    #esta funcion no puede cambiar valores que ya cambio la funcion obstaculos
+
+                    #recorre la lista y cuando esta en un valor 1 o 2 tiene una chance de cambiar ese valor
+                    #a un 4
                     if lista [j][i]==1 or lista [j][i]==2:
                         x=random.randint(0,100)
                         if x<10:                           
                             contadoritems=contadoritems+1
 
-                            #igual que con los obstaculos cambiamos el valor de la lista donde aparecen items
-                            #esto ayudara mas tarde a que el personaje los pueda "recolectar"
                             lista[j][i]=4
-
+                            
+                            #si la funcion cambia 50 valores termina automaticamente
                             if contadoritems==50:
                                     return lista
 

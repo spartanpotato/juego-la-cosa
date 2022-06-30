@@ -13,7 +13,7 @@ def obstaculos(lista):
         #el while se asegura de que se creen por lo menos 10 obstaculos
         while contadorobstaculo<10:
 
-            #recorre la lista y tiene una chance de copiar la variable cada vez que encuentra un 1
+            #recorre la lista y tiene una chance de copiar el valor 3 cada vez que encuentra un 1
             for i in range(20):
                 for j in range(20):
                     if lista [j][i]==1:
@@ -21,10 +21,16 @@ def obstaculos(lista):
                         #asigna la probabilidad de copiar la imagen#
                         x=random.randint(0,100)
                         if x<7:
+                                
                             contadorobstaculo=contadorobstaculo+1
 
-                            #cambiamos el valor de la lista para la funcion items#
+                            #cambia el valor de la lista#
                             lista[j][i]=3
+
+                            #si se copian 15 valores la funcion termina automaticamente
+                            if contadorobstaculo==15:
+                                    return lista
+        #se devuelve la nueva lista                        
         return lista
                     
                 
