@@ -108,6 +108,11 @@ def gameplay():
         #si las nuevas coordenadas estan en un lugar prohibido(fuera del tablero, en una pared, u obstaculo)
         #si detecta esto devuelve un True al if y se contrarresta el movimiento antes de que se actualice la pantalla
         for event in pygame.event.get():
+
+            if (event.type == pygame.QUIT):
+                running=False
+
+                
             if event.type == pygame.KEYDOWN:      
                 tecla_presionada= pygame.key.name(event.key)
                 
