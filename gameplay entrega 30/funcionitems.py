@@ -12,7 +12,7 @@ def items(lista):
         
         contadoritems=0
 
-        while contadoritems<40:
+        while contadoritems<30:
             for i in range(20):
                 for j in range(20):
 
@@ -20,12 +20,15 @@ def items(lista):
                     #esta funcion no puede copiar otra imagen en las mismas coordenadas
                     if lista [j][i]==1 or lista [j][i]==2:
                         x=random.randint(0,100)
-                        if x<5:                           
+                        if x<10:                           
                             contadoritems=contadoritems+1
 
                             #igual que con los obstaculos cambiamos el valor de la lista donde aparecen items
                             #esto ayudara mas tarde a que el personaje los pueda "recolectar"
                             lista[j][i]=4
+
+                            if contadoritems==50:
+                                    return lista
 
      
         return lista

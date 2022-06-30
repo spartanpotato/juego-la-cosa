@@ -17,7 +17,7 @@ def crearmapa(x):
     wallimg = pygame.image.load('pared2.png')
     floorimg= pygame.image.load("piso10.png")
     obstaculo= pygame.image.load("obs2.png")
-    catimg  = pygame.image.load("cat.png")
+    itemimg  = pygame.image.load("item5.png")
     
 
     #lo que hace este for anidado es recorrer la lista y copiar
@@ -35,7 +35,7 @@ def crearmapa(x):
                 ventana.blit(obstaculo, (32*i,32*j))
 
             if lista1[j][i]==4:
-                ventana.blit(catimg, (32*i, 32*j))
+                ventana.blit(itemimg, (32*i, 32*j))
     
             
                 

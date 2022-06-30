@@ -20,7 +20,7 @@ def obstaculos(lista):
 
                         #asigna la probabilidad de copiar la imagen#
                         x=random.randint(0,100)
-                        if x<5:
+                        if x<7:
                             contadorobstaculo=contadorobstaculo+1
 
                             #cambiamos el valor de la lista para la funcion items#
