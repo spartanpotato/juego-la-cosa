@@ -1,6 +1,8 @@
 import pygame
 import sys
 import random
+import pantallainicio
+import funcionitems
 
 
 ANCHOVENTANA=640
@@ -12,9 +14,9 @@ def crearmapa(x):
     lista1=x
 
     #image load le asigna una imagen a una variable
-    wallimg = pygame.image.load('tile 1.png')
-    floorimg= pygame.image.load("piso4.png")
-    weirdimg= pygame.image.load("weird.jpg")
+    wallimg = pygame.image.load('pared2.png')
+    floorimg= pygame.image.load("piso10.png")
+    obstaculo= pygame.image.load("obs2.png")
     catimg  = pygame.image.load("cat.png")
     
 
@@ -30,7 +32,7 @@ def crearmapa(x):
                 ventana.blit(floorimg, (32*i,32*j))
 
             if lista1[j][i]==3:
-                ventana.blit(weirdimg, (32*i,32*j))
+                ventana.blit(obstaculo, (32*i,32*j))
 
             if lista1[j][i]==4:
                 ventana.blit(catimg, (32*i, 32*j))
