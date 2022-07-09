@@ -12,6 +12,7 @@ import funcionitems
 import crearmapa
 import obstaculos
 import restriccion
+import movimientonpc
 
 #dimensiones de la ventana
 ANCHOVENTANA=640
@@ -108,60 +109,13 @@ def gameplay():
         #los npc se mueven cada x(controlmovimiento) frames, dependiendo de una variable al azar se pueden mover
         #o quedarse quietos. La funcion restriccion funciona igual como con el personaje del jugador
         if controlmovimiento==10:
-            controlmovimiento=0
-            random1=random.randint(0,4)
-            if random1==0:
-                xnpc1=xnpc1+1
-                if restriccion.restriccion(xnpc1,ynpc1,lista):
-                    xnpc1=xnpc1-1
-            if random1==1:
-                xnpc1=xnpc1-1
-                if restriccion.restriccion(xnpc1,ynpc1,lista):
-                    xnpc1=xnpc1+1
-            if random1==2:
-                ynpc1=ynpc1+1
-                if restriccion.restriccion(xnpc1,ynpc1,lista):
-                    ynpc1=ynpc1-1
-            if random1==3:
-                ynpc1=ynpc1-1
-                if restriccion.restriccion(xnpc1,ynpc1,lista):
-                    ynpc1=ynpc1+1
+            controlmovimiento=0       
+          
+            xnpc1,ynpc1=movimientonpc.movimientoaleatorio(xnpc1,ynpc1,lista)
 
-            random1=random.randint(0,4)
-            if random1==0:
-                xnpc2=xnpc2+1
-                if restriccion.restriccion(xnpc2,ynpc2,lista):
-                    xnpc2=xnpc2-1
-            if random1==1:
-                xnpc2=xnpc2-1
-                if restriccion.restriccion(xnpc2,ynpc2,lista):
-                    xnpc2=xnpc2+1
-            if random1==2:
-                ynpc2=ynpc2+1
-                if restriccion.restriccion(xnpc2,ynpc2,lista):
-                    ynpc2=ynpc2-1
-            if random1==3:
-                ynpc2=ynpc2-1
-                if restriccion.restriccion(xnpc2,ynpc2,lista):
-                    ynpc2=ynpc2+1
-
-            random1=random.randint(0,4)
-            if random1==0:
-                xnpc3=xnpc3+1
-                if restriccion.restriccion(xnpc3,ynpc3,lista):
-                    xnpc3=xnpc3-1
-            if random1==1:
-                xnpc3=xnpc3-1
-                if restriccion.restriccion(xnpc3,ynpc3,lista):
-                    xnpc3=xnpc3+1
-            if random1==2:
-                ynpc3=ynpc3+1
-                if restriccion.restriccion(xnpc3,ynpc3,lista):
-                    ynpc3=ynpc3-1
-            if random1==3:
-                ynpc3=ynpc3-1
-                if restriccion.restriccion(xnpc3,ynpc3,lista):
-                    ynpc3=ynpc3+1
+            xnpc2,ynpc2=movimientonpc.movimientoaleatorio(xnpc2,ynpc2,lista)
+            
+            xnpc3,ynpc3=movimientonpc.movimientoaleatorio(xnpc3,ynpc3,lista)
 
         controlmovimiento=controlmovimiento+1
 
