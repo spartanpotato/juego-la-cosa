@@ -21,13 +21,13 @@ def pantalla1():
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN:
                     tecla_presionada= pygame.key.name(event.key)
-                    if tecla_presionada =="g":
+                    if event.key == pygame.K_RETURN:
                         siguiente="jugar"
                         T=False
-                    if tecla_presionada =="c":
+                    if tecla_presionada =="i":
                         siguiente="controles"
                         T=False
-                    if tecla_presionada =="h":
+                    if tecla_presionada =="o":
                         siguiente="historia"
                         T=False
                 if (event.type==pygame.QUIT):

@@ -19,8 +19,7 @@ def pantalla3():
             for event in pygame.event.get():
                 #el evento KEYDOWN significa presionar cualquier tecla
                 if event.type==pygame.KEYDOWN:
-                    tecla_presionada=pygame.key.name(event.key)
-                    if tecla_presionada=="i":
+                    if event.key == pygame.K_BACKSPACE:
                             pantallainicio.pantalla1()
                 if event.type==pygame.QUIT:
                         pygame.quit()
