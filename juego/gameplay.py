@@ -14,11 +14,37 @@ import obstaculos
 import restriccion
 import movimientonpc
 import recogeitem
+import contadoritems
+import matar
+import victoriacientifico
+import victoriasimbionte
+
 
 #dimensiones de la ventana
-ANCHOVENTANA=640
-ALTOVENTANA=640
+
 def partida():
+    ANCHOVENTANA=720
+    ALTOVENTANA=640
+    ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
+    simbionte=random.randint(1,4)
+    pan=True
+    while pan:
+        if simbionte==1:
+            ventana.fill((34,146,8))
+        else:
+            ventana.fill((135,20,80))
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+                            
+            if event.type == pygame.KEYDOWN:      
+                if event.key==pygame.K_RETURN:
+                    pan=False
+    ventana.fill((0,0,0))
+                    
+                
+        
+        
     lista=[[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0],
         [0,0,2,2,2,2,2,2,0,0,0,1,1,1,1,1,1,1,0,0],
         [1,1,2,0,0,0,0,2,0,0,0,1,1,1,1,1,1,1,0,0],
@@ -39,10 +65,7 @@ def partida():
         [0,0,0,0,0,0,0,0,2,0,2,0,2,0,1,1,1,1,1,0],
         [0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0]]
-    #crea la ventana
-    pygame.init()
-    ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
-    pygame.display.set_caption("test")
+
 
     #definen las imagenes del jugador y los npc
     Player=pygame.image.load('personaje1.png')
@@ -55,7 +78,7 @@ def partida():
     #cambiarlo por un 4, termina cuando cambio al menos 30 valores o cuando cambio 50, devuelve la
     #nueva lista
     lista=obstaculos.obstaculos(lista)    
-    lista=funcionitems.items(lista)                   
+    lista=funcionitems.items(lista)
 
 
     #se definen coordenadas al azar para los personajes, si estas no estan en un 1 o 2 de la lista
@@ -86,8 +109,14 @@ def partida():
 
 
     controlmovimiento=0
-
+    pause = False
     running = True
+    playeralive=True
+    npc1alive=True
+    npc2alive=True
+    npc3alive=True
+    muertos=0
+    pantalla="no"
     while running:
 
         #en cada frame del gampeplay se copia la imagen de los personajes en sus coordenadas actuales
@@ -97,26 +126,40 @@ def partida():
         crearmapa.crearmapa(lista)
 
         #copia los sprites de los personajes en la pantalla
-        ventana.blit(Player, (xPlayer*32,yPlayer*32))
-        ventana.blit(npc, (xnpc1*32,ynpc1*32))
-        ventana.blit(npc, (xnpc2*32,ynpc2*32))
-        ventana.blit(npc, (xnpc3*32,ynpc3*32))
+        if playeralive:
+            ventana.blit(Player, ((xPlayer*32)+40,yPlayer*32))
+        if npc1alive:
+            ventana.blit(npc, ((xnpc1*32)+40,ynpc1*32))
+        if npc2alive:
+            ventana.blit(npc, ((xnpc2*32)+40,ynpc2*32))
+        if npc3alive:
+            ventana.blit(npc, ((xnpc3*32)+40,ynpc3*32))
         
         #actualiza los cambios en la pantalla
         pygame.display.flip()
+
+        while pause:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    tecla_presionada=pygame.key.name(event.key)
+                    if tecla_presionada== "p":
+                        pause=False
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    os._exit(1)
 
         
 
         #los npc se mueven cada x(controlmovimiento) frames, dependiendo de una variable al azar se pueden mover
         #o quedarse quietos. La funcion restriccion funciona igual como con el personaje del jugador
-        if controlmovimiento==10:
+        if controlmovimiento==20:
             controlmovimiento=0       
-          
-            xnpc1,ynpc1=movimientonpc.movimientoaleatorio(xnpc1,ynpc1,lista)
-
-            xnpc2,ynpc2=movimientonpc.movimientoaleatorio(xnpc2,ynpc2,lista)
-            
-            xnpc3,ynpc3=movimientonpc.movimientoaleatorio(xnpc3,ynpc3,lista)
+            if npc1alive:
+                xnpc1,ynpc1=movimientonpc.movimientoaleatorio(xnpc1,ynpc1,lista)
+            if npc2alive:
+                xnpc2,ynpc2=movimientonpc.movimientoaleatorio(xnpc2,ynpc2,lista)
+            if npc3alive: 
+                xnpc3,ynpc3=movimientonpc.movimientoaleatorio(xnpc3,ynpc3,lista)
 
         controlmovimiento=controlmovimiento+1
 
@@ -130,23 +173,30 @@ def partida():
             if event.type == pygame.KEYDOWN:      
                 tecla_presionada= pygame.key.name(event.key)
                 
-                if tecla_presionada == 'w':
+                if tecla_presionada == 'w' and playeralive:
                     yPlayer = yPlayer-1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         yPlayer = yPlayer+1
                         
-                if tecla_presionada == 'a':                    
+                if tecla_presionada == 'a' and playeralive:                    
                     xPlayer = xPlayer-1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         xPlayer = xPlayer+1
-                if tecla_presionada == 's':
+                if tecla_presionada == 's' and playeralive:
                     yPlayer = yPlayer+1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         yPlayer = yPlayer-1
-                if tecla_presionada == 'd':
+                if tecla_presionada == 'd' and playeralive:
                     xPlayer = xPlayer+1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         xPlayer = xPlayer-1
+
+
+                if tecla_presionada == "p":
+                    pause=True
+                if tecla_presionada=='r':
+                    pantalla="reinicio"
+                    running=False
             if (event.type == pygame.QUIT):
                 running=False
 
@@ -155,6 +205,36 @@ def partida():
         lista=recogeitem.recogerItem(xnpc2,ynpc2,lista)
         lista=recogeitem.recogerItem(xnpc3,ynpc3,lista)
         lista=recogeitem.recogerItem(xPlayer,yPlayer,lista)
+        if contadoritems.contadoritems(lista):
+            pantalla="cientifico"
+            running=False
+
+        muerte=matar.matar(xnpc1,ynpc1,xnpc2,ynpc2,xnpc3,ynpc3,xPlayer,yPlayer,simbionte)
+        if muerte==0 and playeralive:
+            playeralive=False
+            muertos=muertos+1
+        if muerte==1 and npc1alive:
+            npc1alive=False
+            muertos=muertos+1
+        if muerte==2 and npc2alive:
+            npc2alive=False
+            muertos=muertos+1
+        if muerte==3 and npc3alive:
+            npc3alive=False
+            muertos=muertos+1
+        if muertos==3:
+            pantalla="simbionte"
+            running=False
+        
+    if pantalla=="cientifico":
+        victoriacientifico.victoriacientifico()
+    if pantalla=="simbionte":
+        victoriasimbionte.victoriasimbionte()
+    if pantalla=="reinicio":
+        partida()
+   
+                
+            
     pygame.quit()
     os._exit(1)
         

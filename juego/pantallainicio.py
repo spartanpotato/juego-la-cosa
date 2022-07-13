@@ -6,17 +6,18 @@ import os
 import instrucciones
 import historia
 
-ANCHOVENTANA=640
+ANCHOVENTANA=720
 ALTOVENTANA=640
 ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
 
 
 
 def pantalla1():
+        imageninicio=pygame.image.load("pantallainicio.png")
         siguiente=""
         T=True
         while T:
-            ventana.fill((31,99,79))
+            ventana.blit(imageninicio, (0,0))
             pygame.display.flip()
             for event in pygame.event.get():
                 if event.type==pygame.KEYDOWN:

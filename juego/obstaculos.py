@@ -2,10 +2,6 @@ import pygame
 import sys
 import random
 
-ANCHOVENTANA=640
-ALTOVENTANA=640
-ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
-
 
 def obstaculos(lista):       
         contadorobstaculo=0       

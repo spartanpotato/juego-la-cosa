@@ -2,9 +2,6 @@ import pygame
 import sys
 import random
 
-ANCHOVENTANA=640
-ALTOVENTANA=640
-ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
 
 #la funcion toma las coordenadas x e y del personaje y la lista actual
 def restriccion(x,y,lista):

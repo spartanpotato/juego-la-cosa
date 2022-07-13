@@ -5,7 +5,7 @@ import pantallainicio
 import gameplay
 import os
 
-ANCHOVENTANA=640
+ANCHOVENTANA=720
 ALTOVENTANA=640
 def loop():
     pygame.init()

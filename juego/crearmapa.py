@@ -5,7 +5,7 @@ import random
 
 
 
-ANCHOVENTANA=640
+ANCHOVENTANA=720
 ALTOVENTANA=640
 ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
     
@@ -29,22 +29,22 @@ def crearmapa(lista):
             #copia paredes#
             if lista[j][i]==0:
                 #blit copia la imagen en las coordenadas dadas
-                ventana.blit(wallimg, (32*i,32*j))
+                ventana.blit(wallimg, ((32*i)+40,32*j))
 
             #copia el suelo
             #va a copiar el suelo en cada valor que era 1 o 2 en la lista original 
             if lista[j][i]==1 or lista[j][i]==2 or lista[j][i]==3 or lista[j][i]==4:
-                ventana.blit(floorimg, (32*i,32*j))
+                ventana.blit(floorimg, ((32*i)+40,32*j))
 
             #copia obstaculos
             #como la funcion ya copio el suelo en la misma coordenadas esta imagen se copia  encima
             #para que no este en un fondo negro, esto tambien se aplica a la siguiente imagen 
             if lista[j][i]==3:
-                ventana.blit(obstaculo, (32*i,32*j))
+                ventana.blit(obstaculo, ((32*i)+40,32*j))
 
             #copia items
             if lista[j][i]==4:
-                ventana.blit(itemimg, (32*i, 32*j))
+                ventana.blit(itemimg, ((32*i)+40,32*j))
     
             
                 
