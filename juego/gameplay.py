@@ -31,20 +31,40 @@ def partida():
     simbionte=random.randint(0,3)
 
     #asigna sonidos a variables
-    deathsound=mixer.Sound("death.wav")
+    death_sound=mixer.Sound("death.wav")
     press_sound=mixer.Sound("press.ogg")
     back_sound=mixer.Sound("back.ogg")
     pause_sound=mixer.Sound("pause.ogg")
     resume_sound=mixer.Sound("resume.ogg")
     player_sound=mixer.Sound("playersound.ogg")
+    mixer.music.load("gamemusic.mp3")
+    
+    #asigna volumen
+    mixer.Sound.set_volume(player_sound, 0.1)
+    mixer.Sound.set_volume(death_sound, 0.3)
+    mixer.Sound.set_volume(press_sound, 0.3)
+    mixer.Sound.set_volume(back_sound, 0.3)
+    mixer.Sound.set_volume(pause_sound, 0.3)
+    mixer.Sound.set_volume(resume_sound, 0.3)
+    mixer.music.set_volume(0.2)
+
+    #activa musica de gameplay
+    mixer.music.play(-1)
+
+    #asigna imagenes a variables
+    Player=pygame.image.load('personaje1.png')
+    npc=pygame.image.load('personaje.png')
+    erescientifico=pygame.image.load("erescientifico.png")
+    eresimbionte=pygame.image.load("eresimbionte.png")
+
 
     #pantalla que muestra si el jugador es simbionte o cientifico
     T=True
     while T:
         if simbionte==0:
-            ventana.fill((34,146,8))
+            ventana.blit(eresimbionte,(0,0))
         else:
-            ventana.fill((135,20,80))
+            ventana.blit(erescientifico,(0,0))
         pygame.display.flip()
         for event in pygame.event.get():
             
@@ -79,9 +99,6 @@ def partida():
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0]]
 
 
-    #definen las imagenes del jugador y los npc
-    Player=pygame.image.load('personaje1.png')
-    npc=pygame.image.load('personaje.png')
 
     #ambas funciones toman la lista y la modifican para añadir variables correspondientes a obstaculos e items
     lista=obstaculos.obstaculos(lista)    
@@ -243,19 +260,19 @@ def partida():
         if muerte==0 and playeralive:
             playeralive=False
             muertos=muertos+1
-            deathsound.play()
+            death_sound.play()
         if muerte==1 and npc1alive:
             npc1alive=False
             muertos=muertos+1
-            deathsound.play()
+            death_sound.play()
         if muerte==2 and npc2alive:
             npc2alive=False
             muertos=muertos+1
-            deathsound.play()
+            death_sound.play()
         if muerte==3 and npc3alive:
             npc3alive=False
             muertos=muertos+1
-            deathsound.play()
+            death_sound.play()
 
         #si el simbiomte mata a los otros 3 personajes termina el gameplay y se muestra pantalla de victoria simbionte    
         if muertos==3:

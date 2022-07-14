@@ -19,12 +19,19 @@ def victoriacientifico():
         #asigna sonido a variables
         press_sound=mixer.Sound("press.ogg")
         back_sound=mixer.Sound("back.ogg")
+
+        #asigna imagen a variable
+        imagenvictoria=pygame.image.load("victoriacientifico.png")
+
+        #asigna volumen
+        mixer.Sound.set_volume(press_sound, 0.3)
+        mixer.Sound.set_volume(back_sound, 0.3)
         
         T=True
         while T:
 
             #dibuja imagen    
-            ventana.fill((0,200,200))
+            ventana.blit(imagenvictoria,(0,0))
             pygame.display.flip()
             
             for event in pygame.event.get():

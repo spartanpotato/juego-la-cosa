@@ -16,8 +16,12 @@ def pantalla2():
         
         #asigna sonido a variable
         back_sound=mixer.Sound("back.ogg")
+        
         #asigna imagen a variable
         imagencontroles=pygame.image.load("pcontroles.png")
+
+        #asigna volumen
+        mixer.Sound.set_volume(back_sound, 0.3)
         
         T=True
         while T:
@@ -33,7 +37,8 @@ def pantalla2():
                             #activa sonido
                             back_sound.play()
                             
-                            pantallainicio.pantalla1()
+                            T=False
+                            
                 if event.type==pygame.QUIT:
                         pygame.quit()
                         os._exit(1)

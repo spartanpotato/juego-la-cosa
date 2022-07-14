@@ -19,13 +19,20 @@ def victoriasimbionte():
         #asigna sonido a variables
         press_sound=mixer.Sound("press.ogg")
         back_sound=mixer.Sound("back.ogg")
+
+        #asigna imagen a variable
+        imagenvictoria=pygame.image.load("victoriasimbionte.png")
+
+        #asigna volumen
+        mixer.Sound.set_volume(press_sound, 0.3)
+        mixer.Sound.set_volume(back_sound, 0.3)
         
         T=True
         #el while mantiene la pantalla andando#
         while T:
 
             #dibuja imagen    
-            ventana.fill((196,0,0))
+            ventana.blit(imagenvictoria,(0,0))
             pygame.display.flip()
             
             for event in pygame.event.get():
