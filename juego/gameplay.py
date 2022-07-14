@@ -18,32 +18,37 @@ import contadoritems
 import matar
 import victoriacientifico
 import victoriasimbionte
+from pygame import mixer
 
 
 #dimensiones de la ventana
 
 def partida():
+    mixer.init()
     ANCHOVENTANA=720
     ALTOVENTANA=640
     ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
     simbionte=random.randint(1,4)
-    pan=True
-    while pan:
+    deathsound=mixer.Sound("death.wav")
+    press_sound=mixer.Sound("press.ogg")
+    back_sound=mixer.Sound("back.ogg")
+    pause_sound=mixer.Sound("pause.ogg")
+    resume_sound=mixer.Sound("resume.ogg")
+    player_sound=mixer.Sound("playersound.ogg")
+    T=True
+    while T:
         if simbionte==1:
             ventana.fill((34,146,8))
         else:
             ventana.fill((135,20,80))
         pygame.display.flip()
-
-        for event in pygame.event.get():
-                            
+        for event in pygame.event.get():                            
             if event.type == pygame.KEYDOWN:      
                 if event.key==pygame.K_RETURN:
-                    pan=False
+                    press_sound.play()
+                    T=False
     ventana.fill((0,0,0))
-                    
-                
-        
+                       
         
     lista=[[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0],
         [0,0,2,2,2,2,2,2,0,0,0,1,1,1,1,1,1,1,0,0],
@@ -143,6 +148,7 @@ def partida():
                 if event.type == pygame.KEYDOWN:
                     tecla_presionada=pygame.key.name(event.key)
                     if tecla_presionada== "p":
+                        resume_sound.play()
                         pause=False
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -177,24 +183,29 @@ def partida():
                     yPlayer = yPlayer-1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         yPlayer = yPlayer+1
-                        
+                    player_sound.play()
                 if tecla_presionada == 'a' and playeralive:                    
                     xPlayer = xPlayer-1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         xPlayer = xPlayer+1
+                    player_sound.play()
                 if tecla_presionada == 's' and playeralive:
                     yPlayer = yPlayer+1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         yPlayer = yPlayer-1
+                    player_sound.play()
                 if tecla_presionada == 'd' and playeralive:
                     xPlayer = xPlayer+1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
                         xPlayer = xPlayer-1
+                    player_sound.play()
 
 
                 if tecla_presionada == "p":
+                    pause_sound.play()
                     pause=True
                 if tecla_presionada=='r':
+                    back_sound.play()
                     pantalla="reinicio"
                     running=False
             if (event.type == pygame.QUIT):
@@ -213,15 +224,19 @@ def partida():
         if muerte==0 and playeralive:
             playeralive=False
             muertos=muertos+1
+            deathsound.play()
         if muerte==1 and npc1alive:
             npc1alive=False
             muertos=muertos+1
+            deathsound.play()
         if muerte==2 and npc2alive:
             npc2alive=False
             muertos=muertos+1
+            deathsound.play()
         if muerte==3 and npc3alive:
             npc3alive=False
             muertos=muertos+1
+            deathsound.play()
         if muertos==3:
             pantalla="simbionte"
             running=False

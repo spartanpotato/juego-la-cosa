@@ -5,6 +5,7 @@ import pantallainicio
 import os
 import gameplay
 import pantallainicio
+from pygame import mixer
 
 ANCHOVENTANA=720
 ALTOVENTANA=640
@@ -13,6 +14,9 @@ ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
 
 
 def victoriasimbionte():
+        pygame.mixer.init()
+        press_sound=mixer.Sound("press.ogg")
+        back_sound=mixer.Sound("back.ogg")
         T=True
         #el while mantiene la pantalla andando#
         while T:
@@ -23,8 +27,10 @@ def victoriasimbionte():
                 if event.type==pygame.KEYDOWN:
                     tecla_presionada=pygame.key.name(event.key)
                     if tecla_presionada=="r":
+                            press_sound.play()
                             gameplay.partida()
                     if event.key == pygame.K_RETURN:
+                            back_sound.play()
                             pantallainicio.pantalla1()
                             
                             

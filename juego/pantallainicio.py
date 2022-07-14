@@ -5,6 +5,7 @@ import gameplay
 import os
 import instrucciones
 import historia
+from pygame import mixer
 
 ANCHOVENTANA=720
 ALTOVENTANA=640
@@ -13,7 +14,9 @@ ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
 
 
 def pantalla1():
+        pygame.mixer.init()
         imageninicio=pygame.image.load("pantallainicio.png")
+        press_sound=mixer.Sound("press.ogg")
         siguiente=""
         T=True
         while T:
@@ -25,12 +28,15 @@ def pantalla1():
                     if event.key == pygame.K_RETURN:
                         siguiente="jugar"
                         T=False
+                        press_sound.play()
                     if tecla_presionada =="i":
                         siguiente="controles"
                         T=False
+                        press_sound.play()
                     if tecla_presionada =="o":
                         siguiente="historia"
                         T=False
+                        press_sound.play()
                 if (event.type==pygame.QUIT):
                         pygame.quit()
                         os._exit(1)
