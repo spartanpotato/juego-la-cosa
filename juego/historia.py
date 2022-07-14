@@ -13,18 +13,27 @@ ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
 
 def pantalla3():
         pygame.mixer.init()
+
+        #asigna sonido a variable
         back_sound=mixer.Sound("back.ogg")
+        #asigna imagen a variable
         imagenhistoria=pygame.image.load("phistoria.png")
+        
         T=True
-        #el while mantiene la pantalla andando#
         while T:
+
+            #dibuja imagen    
             ventana.blit(imagenhistoria,(0,0))
             pygame.display.flip()
+            
             for event in pygame.event.get():
-                #el evento KEYDOWN significa presionar cualquier tecla
+                #si presiona backspace se vuelve a pantallainicio
                 if event.type==pygame.KEYDOWN:
                     if event.key == pygame.K_BACKSPACE:
+
+                            #activa sonido
                             back_sound.play()
+                            
                             pantallainicio.pantalla1()
                 if event.type==pygame.QUIT:
                         pygame.quit()

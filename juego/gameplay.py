@@ -21,35 +21,42 @@ import victoriasimbionte
 from pygame import mixer
 
 
-#dimensiones de la ventana
-
 def partida():
     mixer.init()
     ANCHOVENTANA=720
     ALTOVENTANA=640
     ventana=pygame.display.set_mode((ANCHOVENTANA,ALTOVENTANA))
-    simbionte=random.randint(1,4)
+
+    #variable simbionte, si es 0 el jugador es el simbionte, cualquier otro numero es un npc
+    simbionte=random.randint(0,3)
+
+    #asigna sonidos a variables
     deathsound=mixer.Sound("death.wav")
     press_sound=mixer.Sound("press.ogg")
     back_sound=mixer.Sound("back.ogg")
     pause_sound=mixer.Sound("pause.ogg")
     resume_sound=mixer.Sound("resume.ogg")
     player_sound=mixer.Sound("playersound.ogg")
+
+    #pantalla que muestra si el jugador es simbionte o cientifico
     T=True
     while T:
-        if simbionte==1:
+        if simbionte==0:
             ventana.fill((34,146,8))
         else:
             ventana.fill((135,20,80))
         pygame.display.flip()
-        for event in pygame.event.get():                            
+        for event in pygame.event.get():
+            
+            #se presiona enter para continuar
             if event.type == pygame.KEYDOWN:      
                 if event.key==pygame.K_RETURN:
                     press_sound.play()
                     T=False
+                    
     ventana.fill((0,0,0))
                        
-        
+    #lista original, define donde hay paredes, pasillos y habitaciones    
     lista=[[0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0],
         [0,0,2,2,2,2,2,2,0,0,0,1,1,1,1,1,1,1,0,0],
         [1,1,2,0,0,0,0,2,0,0,0,1,1,1,1,1,1,1,0,0],
@@ -76,12 +83,7 @@ def partida():
     Player=pygame.image.load('personaje1.png')
     npc=pygame.image.load('personaje.png')
 
-    #la funcion obstaculos toma la lista la lista y inicial y la recorre, cada vez que encuentra
-    #un 1 tiene una chance de cambiar ese uno por un 3, termina cuando cambio al menos 10 valores
-    #o cambio 15, devuelve la nueva lista
-    #la funcion items toma la nueva lista y la recorre, cuando encuentra un 1 o 2 tiene una chance
-    #cambiarlo por un 4, termina cuando cambio al menos 30 valores o cuando cambio 50, devuelve la
-    #nueva lista
+    #ambas funciones toman la lista y la modifican para añadir variables correspondientes a obstaculos e items
     lista=obstaculos.obstaculos(lista)    
     lista=funcionitems.items(lista)
 
@@ -112,25 +114,31 @@ def partida():
         xnpc3=random.randint(0,19)
         ynpc3=random.randint(0,19)
 
-
+    #contadores
     controlmovimiento=0
+    muertos=0
+
+    #variables de estado para pantallas
     pause = False
     running = True
+
+    #variables de estado de personajes
     playeralive=True
     npc1alive=True
     npc2alive=True
     npc3alive=True
-    muertos=0
+    
+    #asigna variable para usar luego
     pantalla="no"
+
+    #aqui ocurre el juego
     while running:
 
-        #en cada frame del gampeplay se copia la imagen de los personajes en sus coordenadas actuales
-        #antes de eso se copia el mapa para borrar la imagen anterior y se vea movimiento
-        #la funcion crearmapa va a dibujar las paredes, el piso, y encima de el piso los obstaculos e items
-        #(mas info en su modulo)
+        #en cada frame del gampelay se dibuja el mapa encima de la imagen anterior y los personajes
+        #en sus coordenadas nuevas encima del mapa
         crearmapa.crearmapa(lista)
 
-        #copia los sprites de los personajes en la pantalla
+        #dibuja a los personajes si estan vivos
         if playeralive:
             ventana.blit(Player, ((xPlayer*32)+40,yPlayer*32))
         if npc1alive:
@@ -143,11 +151,14 @@ def partida():
         #actualiza los cambios en la pantalla
         pygame.display.flip()
 
+        #pausa
         while pause:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
+                    #se presiona p para reanudar
                     tecla_presionada=pygame.key.name(event.key)
                     if tecla_presionada== "p":
+                        #activa sonido
                         resume_sound.play()
                         pause=False
                 if event.type == pygame.QUIT:
@@ -156,29 +167,29 @@ def partida():
 
         
 
-        #los npc se mueven cada x(controlmovimiento) frames, dependiendo de una variable al azar se pueden mover
-        #o quedarse quietos. La funcion restriccion funciona igual como con el personaje del jugador
+        #mientras mas alto sea el numero mas deben esperar los npc para moverse
         if controlmovimiento==20:
-            controlmovimiento=0       
+            controlmovimiento=0
+
+            #si los npc estan vivos se llama a la funcion de movimiento para darles nuevas coordenadas
             if npc1alive:
                 xnpc1,ynpc1=movimientonpc.movimientoaleatorio(xnpc1,ynpc1,lista)
             if npc2alive:
                 xnpc2,ynpc2=movimientonpc.movimientoaleatorio(xnpc2,ynpc2,lista)
             if npc3alive: 
                 xnpc3,ynpc3=movimientonpc.movimientoaleatorio(xnpc3,ynpc3,lista)
-
         controlmovimiento=controlmovimiento+1
+        
 
-        #el programa identifica cuando el jugador presiona una tecla de movimiento y cambia las coordenadas
-        #donde se va a copiar el personaje en el siguiente frame para que se mueva
-        #cada vez que ocurre un movimiento se ejecuta un if que llama a la funcion restriccion, esta detecta
-        #si las nuevas coordenadas estan en un lugar prohibido(fuera del tablero, en una pared, u obstaculo)
-        #si detecta esto devuelve un True al if y se contrarresta el movimiento antes de que se actualice la pantalla
+        #aqui aparecen cosas que puede hacer el jugador
         for event in pygame.event.get():
                             
             if event.type == pygame.KEYDOWN:      
                 tecla_presionada= pygame.key.name(event.key)
                 
+                #si el jugador presiona una tecla WASD cambian sus coordenadas y moverse,
+                #se llama la funcion restriccion, si se activa, se anula el cambio.
+                #player_sound.play() genera sonido cuando se mueve
                 if tecla_presionada == 'w' and playeralive:
                     yPlayer = yPlayer-1
                     if restriccion.restriccion(xPlayer,yPlayer,lista):
@@ -200,26 +211,34 @@ def partida():
                         xPlayer = xPlayer-1
                     player_sound.play()
 
-
+                #si presiona p el juego se pausa
                 if tecla_presionada == "p":
+                    #activa sonido
                     pause_sound.play()
                     pause=True
+
+                #si presiona r el juego se reinicia    
                 if tecla_presionada=='r':
+                    #activa sonido
                     back_sound.play()
                     pantalla="reinicio"
                     running=False
             if (event.type == pygame.QUIT):
                 running=False
 
-
+        #funcion permite que personajes recogan items
         lista=recogeitem.recogerItem(xnpc1,ynpc1,lista)
         lista=recogeitem.recogerItem(xnpc2,ynpc2,lista)
         lista=recogeitem.recogerItem(xnpc3,ynpc3,lista)
         lista=recogeitem.recogerItem(xPlayer,yPlayer,lista)
+
+        #si se recogen todos los itemes termina el gameplay y se muestra pantalla de victoria cientificos
         if contadoritems.contadoritems(lista):
             pantalla="cientifico"
             running=False
 
+        #funcion comprueba si el simbionte toca a otro personaje, si lo hace, dicho personaje dejara de dibujarse y moverse
+        #deathsound.play() genrea sonido cada vez que un personaje muere    
         muerte=matar.matar(xnpc1,ynpc1,xnpc2,ynpc2,xnpc3,ynpc3,xPlayer,yPlayer,simbionte)
         if muerte==0 and playeralive:
             playeralive=False
@@ -237,14 +256,19 @@ def partida():
             npc3alive=False
             muertos=muertos+1
             deathsound.play()
+
+        #si el simbiomte mata a los otros 3 personajes termina el gameplay y se muestra pantalla de victoria simbionte    
         if muertos==3:
             pantalla="simbionte"
             running=False
-        
+
+    #llama pantallas de victoria    
     if pantalla=="cientifico":
         victoriacientifico.victoriacientifico()
     if pantalla=="simbionte":
         victoriasimbionte.victoriasimbionte()
+
+    #reinicia gameplay    
     if pantalla=="reinicio":
         partida()
    

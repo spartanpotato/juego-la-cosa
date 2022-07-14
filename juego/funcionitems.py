@@ -4,31 +4,33 @@ import random
 
 
 #la funcion toma la lista modificada que nos dejo la funcion obstaculos
-def items(lista):
-        
+def items(lista):      
         contadoritems=0
 
-        #la funcion continua hasta que hayan por lo menos 30 items
+        #numero representa cantidad minima de items
         while contadoritems<30:
+
+            #recorre lista hasta encontrar 1 o 2
+            #por ende no cambia valores afectados por funcion obstaculos    
             for i in range(20):
-                for j in range(20):
-
-                    #esta funcion no puede cambiar valores que ya cambio la funcion obstaculos
-
-                    #recorre la lista y cuando esta en un valor 1 o 2 tiene una chance de cambiar ese valor
-                    #a un 4
+                for j in range(20):   
                     if lista [j][i]==1 or lista [j][i]==2:
+
+                        #rango mayor da mayor distribucion de obstaculo pero reduce probabilidad
+                        #de que aparezcan mas de 10, lo mismo si el x<numero es mas pequeño    
                         x=random.randint(0,100)
-                        if x<10:                           
+                        if x<10:
+                                
                             contadoritems=contadoritems+1
 
+                            #cambia valor de la lista
                             lista[j][i]=4
                             
-                            #si la funcion cambia 50 valores termina automaticamente
+                            #valor maximo, la funcion termina al instante si llega a este
                             if contadoritems==50:
                                     return lista
 
-     
+        #devuelve la nueva lista
         return (lista)
 
                     
