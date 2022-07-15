@@ -18,6 +18,7 @@ import contadoritems
 import matar
 import victoriacientifico
 import victoriasimbionte
+import pantallainicio
 from pygame import mixer
 
 
@@ -56,6 +57,7 @@ def partida():
     npc=pygame.image.load('personaje.png')
     erescientifico=pygame.image.load("erescientifico.png")
     eresimbionte=pygame.image.load("eresimbionte.png")
+    texto=pygame.image.load("texto.png")
 
 
     #pantalla que muestra si el jugador es simbionte o cientifico
@@ -164,6 +166,10 @@ def partida():
             ventana.blit(npc, ((xnpc2*32)+40,ynpc2*32))
         if npc3alive:
             ventana.blit(npc, ((xnpc3*32)+40,ynpc3*32))
+
+        #si eljugador muere aparece un mensaje
+        if playeralive==False:
+            ventana.blit(texto,(0,0))
         
         #actualiza los cambios en la pantalla
         pygame.display.flip()
@@ -185,7 +191,7 @@ def partida():
         
 
         #mientras mas alto sea el numero mas deben esperar los npc para moverse
-        if controlmovimiento==20:
+        if controlmovimiento==15:
             controlmovimiento=0
 
             #si los npc estan vivos se llama a la funcion de movimiento para darles nuevas coordenadas
@@ -202,7 +208,7 @@ def partida():
         for event in pygame.event.get():
                             
             if event.type == pygame.KEYDOWN:      
-                tecla_presionada= pygame.key.name(event.key)
+                tecla_presionada=pygame.key.name(event.key)
                 
                 #si el jugador presiona una tecla WASD cambian sus coordenadas y moverse,
                 #se llama la funcion restriccion, si se activa, se anula el cambio.
@@ -240,6 +246,13 @@ def partida():
                     back_sound.play()
                     pantalla="reinicio"
                     running=False
+
+                #si presiona backspace luego de morir vuelve al menu principal
+                if event.key==pygame.K_BACKSPACE and playeralive==False:
+                    #activa sonido
+                    back_sound.play()
+                    pantallainicio.pantalla1()
+                    
             if (event.type == pygame.QUIT):
                 running=False
 
